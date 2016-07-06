@@ -1,5 +1,5 @@
 import time
-from tasks import add, do_long_running_task
+from tasks import add, do_long_running_task, book_received
 
 def calculator(a, b):
     result = add.delay(a,b)
@@ -15,5 +15,15 @@ calculator(3,2)
 calculator(4,2)
 calculator(2,5)
 
-do_long_running_task('Hello')
-do_long_running_task('World!')
+book_received.apply_async(
+    args=['NHibernate 4.0 for Beginners'],
+    queue='books',
+    routing_key='books')
+
+book_received.apply_async(
+    args=['The big storm'],
+    queue='books',
+    routing_key='books')
+
+do_long_running_task.delay('Hello')
+do_long_running_task.delay('World!')
